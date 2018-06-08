@@ -1,7 +1,7 @@
 # makefile for pdflib binding for Lua
 
 # change these to reflect your Lua installation
-LUA= /tmp/lhf/lua-5.2.2
+LUA= /tmp/lhf/lua-5.1.5
 LUAINC= $(LUA)/src
 LUALIB= $(LUA)/src
 LUABIN= $(LUA)/src
@@ -35,14 +35,14 @@ TEST= test.lua
 all:	test
 
 test:	$T
-	env LD_LIBRARY_PATH=$(PDFLIB) $(LUABIN)/lua $(TEST)
+	$(LUABIN)/lua $(TEST)
 
 o:	$(MYLIB).o
 
 so:	$T
 
 $T:	$(OBJS)
-	$(MAKESO) -o $@ $(OBJS) -L$(PDFLIB) -lpdf
+	$(MAKESO) -o $@ $(OBJS) $(PDF)/.libs/libpdf.a
 
 clean:
 	rm -f $(OBJS) $T core core.* test.pdf

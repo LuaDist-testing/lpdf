@@ -1,119 +1,102 @@
-This is a Lua binding for PDFlib, a library for generating PDF documents.
-PDFlib can be obtained at http://www.pdflib.com/ .
+This is a library for generating PDF documents with Lua 5.1. It is based on
+the PDFlib Lite library is available at
+	http://www.pdflib.com/download/free-software/pdflib-lite-7/
 
-To try this Lua library, edit Makefile to reflect your installation of Lua
-and PDFlib. Then run make. This will build the library and run a simple test.
+To try the library, edit Makefile to reflect your installation of Lua and
+PDFlib Lite. Then run make. This will build the library and run a simple test.
 For detailed installation instructions, see
         http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/install.html
 
-There is no manual but the binding follows the PDFlib interface closely; read
-the PDFlib manual. The examples in test.lua show the library in action. The
-binding was written for PDFlib 5 but it works fine with the latest PDFlib,
-except that new features are not yet supported. If you need those, please
-get contact me.
+There is no manual but the binding follows the PDFlib Lite interface closely;
+read the PDFlib manual. The examples in test.lua show the library in action.
 
 This code is hereby placed in the public domain.
+PDFlib Lite has its own license.
 Please send comments, suggestions, and bug reports to lhf@tecgraf.puc-rio.br .
 
 -------------------------------------------------------------------------------
 
 pdf library:
- add_bookmark(p,text,parent,open) 
- add_launchlink(p,llx,lly,urx,ury,filename) 
- add_locallink(p,llx,lly,urx,ury,filename,page,optlist) 
- add_nameddest(p,name,optlist) 
- add_note(p,llx,lly,urx,ury,contents,title,icon,open) 
- add_pdflink(p,llx,lly,urx,ury,filename,page,optlist) 
+ __tostring(p) 
+ add_nameddest(p,name,o) 
  add_thumbnail(p,image) 
- add_weblink(p,llx,lly,urx,ury,url) 
- arcn(p,x,y,r,alpha,beta) 
  arc(p,x,y,r,alpha,beta) 
- attach_file(p,llx,lly,urx,ury,filename,description,author,mimetype,icon) 
- begin_font(p,fontname,a,b,c,d,e,f,optlist) 
+ arcn(p,x,y,r,alpha,beta) 
+ begin_document(p,filename,o) 
+ begin_font(p,fontname,a,b,c,d,e,f,o) 
  begin_glyph(p,name,wx,llx,lly,urx,ury) 
- begin_page() 
+ begin_page(p,width,height,o) 
  begin_pattern(p,width,height,xstep,ystep,painttype) 
- begin_template(p,width,height) 
+ begin_template(p,width,height,o) 
  circle(p,x,y,r) 
  clip(p) 
  close_image(p,image) 
- close(p) 
- closepath_fill_stroke(p) 
  closepath(p) 
+ closepath_fill_stroke(p) 
  closepath_stroke(p) 
- close_pdi_page(p,page) 
- close_pdi(p,doc) 
  concat(p,a,b,c,d,e,f) 
  continue_text(p,text) 
- create_gstate(p,optlist) 
- create_pvf(p,filename,data,optlist) 
+ create_action(p,type,o) 
+ create_annotation(p,llx,lly,urx,ury,type,o) 
+ create_bookmark(p,text,o) 
+ create_gstate(p,o) 
+ create_pvf(p,filename,data,o) 
  curveto(p,x1,y1,x2,y2,x3,y3) 
  delete(p) 
  delete_pvf(p,filename) 
  encoding_set_char(p,enconding,slot,glyphname,uv) 
+ end_document(p,o) 
  end_font(p) 
  end_glyph(p) 
- end_page(p) 
- endpath(p) 
+ end_page(p,o) 
  end_pattern(p) 
  end_template(p) 
+ endpath(p) 
  fill(p) 
- fill_pdfblock(p,page,blockname,pdf,optlist) 
  fill_stroke(p) 
- fill_textblock(p,page,blockname,text,optlist) 
- fit_image(p,image,x,y,optlist) 
- fit_pdi_page(p,page,x,y,optlist) 
- fit_textline(p,text,x,y,optlist);
+ fit_image(p,image,x,y,o) 
+ fit_textline(p,text,x,y,o);
  get_buffer(p) 
  get_parameter(p,key,modifier) 
- get_pdi_parameter(p,key,doc,page) 
- get_pdi_value(p,key,doc,page) 
  get_value(p,key,modifier) 
+ info_matchbox(p,boxname,num,keyword) 
+ info_textline(p,text,keyword,o);
  initgraphics(p) 
  lineto(p,x,y) 
- load_font(p,fontname,encoding,optlist) 
- load_iccprofile(p,profilename,optlist) 
- load_image(p,imagetype,filename,optlist) 
- makespotcolor(p,spotname) 
+ load_font(p,fontname,encoding,o) 
+ load_image(p,imagetype,filename,o) 
  moveto(p,x,y) 
  new() 
- open_file(p) 
- open_pdi_page(p,doc,page,optlist) 
- open_pdi(p,filename,optlist) 
- process_pdi(p,doc,page,optlist) 
  rect(p,x,y,width,height) 
  restore(p) 
+ resume_page(p,o) 
  rotate(p,phi) 
  save(p) 
  scale(p,x,y) 
- set_border_color(p,red,green,blue) 
- set_border_dash(p,b,w) 
- set_border_style(p,style,width) 
- setcolor(p,fstype,colorspace,c1,c2,c3,c4) 
- setdashpattern(p,optlist) 
- setdash(p,b,w) 
- setflat(p,flatness) 
- setfont(p,font,fontsize) 
  set_gstate(p,gstate) 
  set_info(p,key,value) 
+ set_parameter(p,key,value) 
+ set_text_pos(p,x,y) 
+ set_value(p,key,value) 
+ setcolor(p,fstype,colorspace,c1,c2,c3,c4) 
+ setdash(p,b,w) 
+ setdashpattern(p,o) 
+ setflat(p,flatness) 
+ setfont(p,font,fontsize) 
  setlinecap(p,linecap) 
  setlinejoin(p,linejoin) 
  setlinewidth(p,width) 
  setmatrix(p,a,b,c,d,e,f) 
  setmiterlimit(p,miter) 
- set_parameter(p,key,value) 
- set_text_pos(p,x,y) 
- set_value(p,key,value) 
- shading_pattern(p,shading,optlist) 
- shading(p,shtype,x0,y0,x1,y1,c1,c2,c3,c4,optlist) 
+ shading(p,shtype,x0,y0,x1,y1,c1,c2,c3,c4,o) 
+ shading_pattern(p,shading,o) 
  shfill(p,shading) 
- show_boxed(p,text,left,top,width,height,hmode,feature) 
  show(p,text) 
  show_xy(p,text,x,y) 
  skew(p,alpha,beta) 
  stringwidth(p,text,font,size) 
  stroke(p) 
- tostring(p) 
+ suspend_page(p,o) 
  translate(p,x,y) 
  version 
 

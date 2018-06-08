@@ -30,7 +30,7 @@ for alpha = 0,360-30,30 do
 end
 p:restore()
 
-_,_,hour,min,sec=string.find(os.date"%H:%M:%S","(%d+):(%d+):(%d+)")
+hour,min,sec=string.match(os.date"%H:%M:%S","(%d+):(%d+):(%d+)")
 
 -- draw hour hand
 p:save()

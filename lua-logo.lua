@@ -1,7 +1,6 @@
 -- lua-logo.lua
 
 sqrt=math.sqrt
-PI=math.pi
 
 RESOLUTION=512
 
@@ -35,7 +34,7 @@ p:show_xy("Lua", -x/2, -0.5)
 
 -- orbit
 p:setlinewidth(0.03)
-x=(1+r)*(PI/180*5)
+x=(1+r)*math.rad(5)
 p:setdash(x,x)
 p:setcolor("stroke", "gray", 0.5)
 p:arcn(0, 0, 1+r, 32, 57)
