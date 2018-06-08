@@ -1,8 +1,8 @@
 /*
 * lpdf.c
-* pdf library for Lua 5.1 based on PDFlib Lite
+* pdf library for Lua 5.2 based on PDFlib Lite
 * Luiz Henrique de Figueiredo <lhf@tecgraf.puc-rio.br>
-* 02 Jul 2013 13:27:15
+* 02 Jul 2013 13:38:58
 * This code is hereby placed in the public domain.
 */
 
@@ -123,8 +123,7 @@ static int Lnew(lua_State *L)			/** new() */
  else
  {
   lua_boxpointer(L,p);
-  luaL_getmetatable(L,MYTYPE);
-  lua_setmetatable(L,-2);
+  luaL_setmetatable(L,MYTYPE);
  }
  return 1;
 }
@@ -892,8 +891,7 @@ static const luaL_Reg R[] =
 LUALIB_API int luaopen_pdf(lua_State *L)
 {
  luaL_newmetatable(L,MYTYPE);
- lua_setglobal(L,MYNAME);
- luaL_register(L,MYNAME,R);
+ luaL_setfuncs(L,R,0);
  lua_pushliteral(L,"version");			/** version */
  lua_pushliteral(L,MYVERSION);
  lua_settable(L,-3);

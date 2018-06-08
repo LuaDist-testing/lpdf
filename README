@@ -1,4 +1,4 @@
-This is a library for generating PDF documents with Lua 5.1. It is based on
+This is a library for generating PDF documents with Lua 5.2. It is based on
 the PDFlib Lite library is available at
 	http://www.pdflib.com/download/free-software/pdflib-lite-7/
 

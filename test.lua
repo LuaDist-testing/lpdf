@@ -1,6 +1,6 @@
 -- test pdflib binding
 
-require"pdf"
+pdf=require"pdf"		-- needs to be global because of other files
 
 print(pdf.version)
 
