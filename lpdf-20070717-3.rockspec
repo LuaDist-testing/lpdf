@@ -1,10 +1,10 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "lpdf"
-version = "20070717-2"
+version = "20070717-3"
 -- LuaDist source
 source = {
-  tag = "20070717-2",
+  tag = "20070717-3",
   url = "git://github.com/LuaDist-testing/lpdf.git"
 }
 -- Original source
@@ -31,7 +31,7 @@ build = {
 	modules = {
 		pdf = {
 			sources = {"lpdf.c",},
-			libraries = {"pdflib"},
+			libraries = {"pdf"},
 			incdirs = {"$(PDFLIB_INCDIR)"},
 			libdirs = {"$(PDFLIB_LIBDIR)"},
 		},
