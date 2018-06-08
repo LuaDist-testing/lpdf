@@ -1,16 +1,16 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "lpdf"
-version = "20070717-3"
+version = "20130627.51-1"
 -- LuaDist source
 source = {
-  tag = "20070717-3",
+  tag = "20130627.51-1",
   url = "git://github.com/LuaDist-testing/lpdf.git"
 }
 -- Original source
 -- source = {
 -- 	url = "http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/5.1/lpdf.tar.gz",
--- 	md5 = "85c3ebe49312bf316cd633c165df8446",
+-- 	md5 = "5609098d43ce2793a0f490c049db8244",
 -- 	dir = "pdf",
 -- }
 description = {
@@ -19,7 +19,7 @@ description = {
 	license = "Public Domain",
 }
 dependencies = {
-	"lua >= 5.1"
+	"lua ~> 5.1"
 }
 external_dependencies = {
 	PDFLIB = {

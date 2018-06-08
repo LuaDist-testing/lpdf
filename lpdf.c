@@ -2,7 +2,7 @@
 * lpdf.c
 * pdf library for Lua 5.1 based on PDFlib
 * Luiz Henrique de Figueiredo <lhf@tecgraf.puc-rio.br>
-* 11 Jul 2007 01:53:39
+* 27 Jun 2013 13:20:38
 * This code is hereby placed in the public domain.
 */
 
@@ -14,17 +14,16 @@
 #include "lua.h"
 #include "lauxlib.h"
 
-#ifndef lua_boxpointer
 #define lua_boxpointer(L,u) \
 	(*(void **)(lua_newuserdata(L, sizeof(void *))) = (u))
-#endif
 
 #define MYNAME		"pdf"
-#define MYVERSION	MYNAME " library for " LUA_VERSION " / Jul 2007 / "\
+#define MYVERSION	MYNAME " library for " LUA_VERSION " / Jun 2013 / "\
 			"using PDFlib " PDFLIB_VERSIONSTRING
 #define MYTYPE		MYNAME " handle"
 
 #define getstring	luaL_checkstring
+#define getlstring(L,i)	luaL_checklstring(L,i,&l)
 #define getostring(L,i)	luaL_optstring(L,i,NULL)
 #define getfloat	(float) luaL_checknumber
 #define getofloat(L,i)	(float) luaL_optnumber(L,i,0)
@@ -167,11 +166,12 @@ static int Lset_parameter(lua_State *L)		/** set_parameter(p,key,value) */
 
 static int Lcreate_pvf(lua_State *L)		/** create_pvf(p,filename,data,optlist) */
 {
+ size_t l;
  PDF *p = getpdf(L,1);
  const char *filename = getstring(L,2);
- const char *data = getstring(L,3);
+ const char *data = getlstring(L,3);
  const char *optlist = getostring(L,4);
- PDF_create_pvf(p,filename,0,data,lua_strlen(L,3),optlist);
+ PDF_create_pvf(p,filename,0,data,l,optlist);
  return 0;
 }
 
@@ -262,39 +262,43 @@ static int Lset_text_pos(lua_State *L)		/** set_text_pos(p,x,y) */
 
 static int Lshow(lua_State *L)			/** show(p,text) */
 {
+ size_t l;
  PDF *p = getpdf(L,1);
- const char *text = getstring(L,2);
- PDF_show2(p,text,lua_strlen(L,2));
+ const char *text = getlstring(L,2);
+ PDF_show2(p,text,l);
  return 0;
 }
 
 static int Lshow_xy(lua_State *L)		/** show_xy(p,text,x,y) */
 {
+ size_t l;
  PDF *p = getpdf(L,1);
- const char *text = getstring(L,2);
+ const char *text = getlstring(L,2);
  float x = getfloat(L,3);
  float y = getfloat(L,4);
- PDF_show_xy2(p,text,lua_strlen(L,2),x,y);
+ PDF_show_xy2(p,text,l,x,y);
  return 0;
 }
 
 static int Lcontinue_text(lua_State *L)		/** continue_text(p,text) */
 {
+ size_t l;
  PDF *p = getpdf(L,1);
- const char *text = getstring(L,2);
- PDF_continue_text2(p,text,lua_strlen(L,2));
+ const char *text = getlstring(L,2);
+ PDF_continue_text2(p,text,l);
  return 0;
 }
 
 static int Lfit_textline(lua_State *L)		/** fit_textline(p,text,x,y,optlist);
 */
 {
+ size_t l;
  PDF *p = getpdf(L,1);
- const char *text = getstring(L,2);
+ const char *text = getlstring(L,2);
  float x = getfloat(L,3);
  float y = getfloat(L,4);
  const char *optlist = getostring(L,5);
- PDF_fit_textline(p,text,lua_strlen(L,2),x,y,optlist);
+ PDF_fit_textline(p,text,l,x,y,optlist);
  return 0;
 }
 
@@ -315,11 +319,12 @@ static int Lshow_boxed(lua_State *L)		/** show_boxed(p,text,left,top,width,heigh
 
 static int Lstringwidth(lua_State *L)		/** stringwidth(p,text,font,size) */
 {
+ size_t l;
  PDF *p = getpdf(L,1);
- const char *text = getstring(L,2);
+ const char *text = getlstring(L,2);
  int font = getint(L,3);
  float size = getfloat(L,4);
- float width = PDF_stringwidth2(p,text,lua_strlen(L,2),font,size);
+ float width = PDF_stringwidth2(p,text,l,font,size);
  lua_pushnumber(L,width);
  return 1;
 }
@@ -801,12 +806,13 @@ static int Lget_pdi_parameter(lua_State *L)	/** get_pdi_parameter(p,key,doc,page
 
 static int Lfill_textblock(lua_State *L)	/** fill_textblock(p,page,blockname,text,optlist) */
 {
+ size_t l;
  PDF *p = getpdf(L,1);
  int page = getint(L,2);
  const char *blockname = getstring(L,3);
- const char *text = getstring(L,4);
+ const char *text = getlstring(L,4);
  const char *optlist = getostring(L,5);
- int rc = PDF_fill_textblock(p,page,blockname,text,lua_strlen(L,4),optlist);
+ int rc = PDF_fill_textblock(p,page,blockname,text,l,optlist);
  return report(L,rc,NULL);
 }
 
@@ -823,53 +829,57 @@ static int Lfill_pdfblock(lua_State *L)	/** fill_pdfblock(p,page,blockname,pdf,o
 
 static int Ladd_bookmark(lua_State *L)		/** add_bookmark(p,text,parent,open) */
 {
+ size_t l;
  PDF *p = getpdf(L,1);
- const char *text = getstring(L,2);
+ const char *text = getlstring(L,2);
  int parent = getint(L,3);
  int open = getint(L,4);
- int rc = PDF_add_bookmark2(p,text,lua_strlen(L,2),parent,open);
+ int rc = PDF_add_bookmark2(p,text,l,parent,open);
  lua_pushnumber(L,rc);
  return 1;
 }
 
 static int Lset_info(lua_State *L)		/** set_info(p,key,value) */
 {
+ size_t l;
  PDF *p = getpdf(L,1);
  const char *key = getstring(L,2);
- const char *value = getstring(L,3);
- PDF_set_info2(p,key,value,lua_strlen(L,3));
+ const char *value = getlstring(L,3);
+ PDF_set_info2(p,key,value,l);
  return 0;
 }
 
 static int Lattach_file(lua_State *L)		/** attach_file(p,llx,lly,urx,ury,filename,description,author,mimetype,icon) */
 
 {
+ size_t l;
  PDF *p = getpdf(L,1);
  float llx = getfloat(L,2);
  float lly = getfloat(L,3);
  float urx = getfloat(L,4);
  float ury = getfloat(L,5);
  const char *filename = getstring(L,6);
- const char *description = getstring(L,7);
+ const char *description = getlstring(L,7);
  const char *author = getstring(L,8);
  const char *mimetype = getstring(L,9);
  const char *icon = getstring(L,10);
- PDF_attach_file2(p,llx,lly,urx,ury,filename,0,description,lua_strlen(L,7),author,lua_strlen(L,8),mimetype,icon);
+ PDF_attach_file2(p,llx,lly,urx,ury,filename,0,description,l,author,lua_strlen(L,8),mimetype,icon);
  return 0;
 }
 
 static int Ladd_note(lua_State *L)		/** add_note(p,llx,lly,urx,ury,contents,title,icon,open) */
 {
+ size_t l;
  PDF *p = getpdf(L,1);
  float llx = getfloat(L,2);
  float lly = getfloat(L,3);
  float urx = getfloat(L,4);
  float ury = getfloat(L,5);
- const char *contents = getstring(L,6);
+ const char *contents = getlstring(L,6);
  const char *title = getstring(L,7);
  const char *icon = getstring(L,8);
  int open = getint(L,9);
- PDF_add_note2(p,llx,lly,urx,ury,contents,lua_strlen(L,6),title,lua_strlen(L,7),icon,open);
+ PDF_add_note2(p,llx,lly,urx,ury,contents,l,title,lua_strlen(L,7),icon,open);
  return 0;
 }
 
@@ -976,7 +986,7 @@ static int Ltostring(lua_State *L)		/** tostring(p) */
  return 1;
 }
 
-static const luaL_reg R[] =
+static const luaL_Reg R[] =
 {
 	{ "__gc",		Ldelete },
 	{ "__tostring",		Ltostring },
@@ -1083,14 +1093,13 @@ static const luaL_reg R[] =
 LUALIB_API int luaopen_pdf(lua_State *L)
 {
  luaL_newmetatable(L,MYTYPE);
- lua_pushvalue(L,-1);
- luaL_openlib(L,NULL,R,0);
+ lua_setglobal(L,MYNAME);
+ luaL_register(L,MYNAME,R);
  lua_pushliteral(L,"version");			/** version */
  lua_pushliteral(L,MYVERSION);
  lua_settable(L,-3);
  lua_pushliteral(L,"__index");
  lua_pushvalue(L,-2);
  lua_settable(L,-3);
- lua_setglobal(L,MYNAME);
  return 1;
 }
