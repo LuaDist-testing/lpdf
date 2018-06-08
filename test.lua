@@ -1,6 +1,6 @@
 -- test pdf binding
 
-require"pdf"
+local pdf=require"pdf"
 
 local function run(x)
 	print("-------",x)
